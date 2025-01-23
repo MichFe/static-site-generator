@@ -1,4 +1,4 @@
-from src.classes.textnode import TEXT_TYPE, TextNode
+from classes.textnode import TEXT_TYPE, TextNode
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -17,9 +17,6 @@ def split_text(text, delimiter, text_type):
     new_nodes = []
 
     for i, item in enumerate(splitted):
-        if item == '':
-            continue
-
         is_text = i % 2 == 0
 
         new_node = None

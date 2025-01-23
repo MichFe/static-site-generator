@@ -1,7 +1,7 @@
 import unittest
 
-from src.classes.leafnode import LeafNode
-from src.classes.parentnode import ParentNode
+from classes.leafnode import LeafNode
+from classes.parentnode import ParentNode
 
 
 
