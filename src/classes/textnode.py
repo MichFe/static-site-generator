@@ -1,6 +1,6 @@
 from enum import Enum
 
-from src.classes.leafnode import LeafNode
+from classes.leafnode import LeafNode
 
 
 
