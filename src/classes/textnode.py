@@ -36,8 +36,8 @@ class TextNode():
                 raise ValueError()
 
     def __eq__(self, other):
-        if self.text == other.text and self.text_type == other.text_type and self.url == other.url:
-            return True
+        if isinstance(other, TextNode):
+            return (self.text == other.text and self.text_type == other.text_type and self.url == other.url)
         return False
 
     def __repr__(self):
