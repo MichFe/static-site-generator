@@ -31,7 +31,7 @@ class TestUtils(unittest.TestCase):
         self.assertListEqual(new_nodes, expected_result)
 
     def test_splitter_bold(self):
-        node = TextNode("This is a text with **bold** text", TEXT_TYPE.BOLD)
+        node = TextNode("This is a text with **bold** text", TEXT_TYPE.TEXT)
         new_nodes = split_nodes_delimiter([node], "**", TEXT_TYPE.BOLD)
         expected_result = [
             TextNode("This is a text with ", TEXT_TYPE.TEXT),
@@ -42,7 +42,7 @@ class TestUtils(unittest.TestCase):
         self.assertListEqual(new_nodes, expected_result)
 
     def test_splitter_malformed_md(self):
-        node = TextNode("This is a malformed md *bold is not closed", TEXT_TYPE.BOLD)
+        node = TextNode("This is a malformed md *bold is not closed", TEXT_TYPE.TEXT)
         with self.assertRaises(ValueError):
             split_nodes_delimiter([node], "*", TEXT_TYPE.BOLD)
 
