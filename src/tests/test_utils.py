@@ -1,7 +1,7 @@
 import unittest
 
 from classes.textnode import TextNode, TEXT_TYPE
-from utils.splitter import split_nodes_delimiter, split_nodes_image, split_nodes_link
+from utils.splitter import markdown_to_blocks, split_nodes_delimiter, split_nodes_image, split_nodes_link, text_to_textnodes
 
 class TestUtils(unittest.TestCase):
     def test_splitter(self):
@@ -126,6 +126,41 @@ class TestSplitNodesImage(unittest.TestCase):
         nodes = []
         result = split_nodes_image(nodes)
         expected_result = []
+        self.assertListEqual(result, expected_result)
+
+class TestTextToTextNodes(unittest.TestCase):
+    def test_text_to_textnodes(self):
+        text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        result = text_to_textnodes(text)
+        expected_result = [
+            TextNode("This is ", TEXT_TYPE.TEXT),
+            TextNode("text", TEXT_TYPE.BOLD),
+            TextNode(" with an ", TEXT_TYPE.TEXT),
+            TextNode("italic", TEXT_TYPE.ITALIC),
+            TextNode(" word and a ", TEXT_TYPE.TEXT),
+            TextNode("code block", TEXT_TYPE.CODE),
+            TextNode(" and an ", TEXT_TYPE.TEXT),
+            TextNode("obi wan image", TEXT_TYPE.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TEXT_TYPE.TEXT),
+            TextNode("link", TEXT_TYPE.LINK, "https://boot.dev"),
+        ]
+        self.assertListEqual(result, expected_result)
+
+class test_markdown_to_blocks(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        markdown = """
+            # This is a heading
+
+            This is a paragraph of text. It has some **bold** and *italic* words inside of it.
+
+            * This is the first list item in a list block\n* This is a list item\n* This is another list item
+            """
+        result = markdown_to_blocks(markdown)
+        expected_result = [
+            "# This is a heading",
+            "This is a paragraph of text. It has some **bold** and *italic* words inside of it.",
+            "* This is the first list item in a list block\n* This is a list item\n* This is another list item"
+        ]
         self.assertListEqual(result, expected_result)
 
 if __name__ == "__main__":

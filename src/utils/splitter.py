@@ -3,6 +3,29 @@ from classes.textnode import TEXT_TYPE, TextNode
 from utils.extract_markdown_images import extract_markdown_images
 from utils.extract_markdown_links import extract_markdown_links
 
+def markdown_to_blocks(md):
+    splitted = md.split("\n\n")
+    whitespace_removed = map(lambda x: x.strip(), splitted)
+    final = filter(lambda x: x, whitespace_removed)
+
+    return list(final)
+
+def text_to_textnodes(text):
+    md_delimiters = {
+        TEXT_TYPE.BOLD: "**",
+        TEXT_TYPE.ITALIC: "*",
+        TEXT_TYPE.CODE: "`",
+    }
+
+    nodes = [TextNode(text, TEXT_TYPE.TEXT)]
+
+    for text_type, delimiter in md_delimiters.items():
+        nodes = split_nodes_delimiter(nodes, delimiter, text_type)
+
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+
+    return nodes
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
@@ -19,12 +42,14 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 def split_text(text, delimiter, text_type):
     if not delimiter:
         raise ValueError("A delimiter is required")
+    if delimiter not in text:
+        return [TextNode(text, TEXT_TYPE.TEXT)]
 
     # The splitted array must be a multiple of 3, if not, the markdown is malformed
     splitted = text.split(delimiter)
     is_md_malformed = len(splitted) % 2 == 0 or len(splitted) < 3
     if is_md_malformed:
-        raise ValueError("Markdown is malformed")
+        raise ValueError(f"Markdown is malformed with text: {text} delimiter: {delimiter} text_type: {text_type}")
 
     new_nodes = []
     for i, item in enumerate(splitted):
@@ -62,6 +87,9 @@ def split_nodes_link(old_nodes):
             new_nodes.append(TextNode(anchor, TEXT_TYPE.LINK, url))
             text = after_match
 
+        if len(text) > 0:
+            new_nodes.append(TextNode(text, TEXT_TYPE.TEXT))
+
     return new_nodes
 
 def split_nodes_image(old_nodes):
@@ -86,5 +114,8 @@ def split_nodes_image(old_nodes):
 
             new_nodes.append(TextNode(alt_text, TEXT_TYPE.IMAGE, url))
             text = after_match
+
+        if len(text) > 0:
+            new_nodes.append(TextNode(text, TEXT_TYPE.TEXT))
 
     return new_nodes
