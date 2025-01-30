@@ -1,7 +1,7 @@
 import unittest
 
 from classes.textnode import TextNode, TEXT_TYPE
-from utils.splitter import split_nodes_delimiter
+from utils.splitter import split_nodes_delimiter, split_nodes_image, split_nodes_link
 
 class TestUtils(unittest.TestCase):
     def test_splitter(self):
@@ -51,6 +51,82 @@ class TestUtils(unittest.TestCase):
         with self.assertRaises(ValueError):
             split_nodes_delimiter([node], "", TEXT_TYPE.CODE)
 
+class TestImageSplitter(unittest.TestCase):
+    def test_split_nodes_link(self):
+        node = TextNode(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
+            TEXT_TYPE.TEXT,
+        )
+        result = split_nodes_link([node])
+        expected_result = [
+            TextNode("This is text with a link ", TEXT_TYPE.TEXT),
+            TextNode("to boot dev", TEXT_TYPE.LINK, "https://www.boot.dev"),
+            TextNode(" and ", TEXT_TYPE.TEXT),
+            TextNode(
+                "to youtube", TEXT_TYPE.LINK, "https://www.youtube.com/@bootdotdev"
+            ),
+        ]
+        self.assertListEqual(result, expected_result)
+
+class TestSlitNodesLink(unittest.TestCase):
+    def test_split_nodes_link(self):
+        node = TextNode(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
+            TEXT_TYPE.TEXT,
+        )
+        result = split_nodes_link([node])
+        expected_result =[
+            TextNode("This is text with a link ", TEXT_TYPE.TEXT),
+            TextNode("to boot dev", TEXT_TYPE.LINK, "https://www.boot.dev"),
+            TextNode(" and ", TEXT_TYPE.TEXT),
+            TextNode(
+                "to youtube", TEXT_TYPE.LINK, "https://www.youtube.com/@bootdotdev"
+            ),
+        ]
+        self.assertListEqual(result, expected_result)
+
+    def test_split_nodes_link_text_without_links(self):
+        node = TextNode("This text do not have any links", TEXT_TYPE.TEXT)
+        result = split_nodes_link([node])
+        expected_result = [
+            TextNode("This text do not have any links", TEXT_TYPE.TEXT)
+        ]
+        self.assertListEqual(result, expected_result)
+
+    def test_split_nodes_link_empty_node_list(self):
+        nodes = []
+        result = split_nodes_link(nodes)
+        expected_result = []
+        self.assertListEqual(result, expected_result)
+
+class TestSplitNodesImage(unittest.TestCase):
+    def test_split_nodes_image(self):
+        node = TextNode(
+            "This is a ![image one](https://my-first-image.com) text with ![image two](https://my-second-image.com)",
+            TEXT_TYPE.TEXT
+        )
+        result = split_nodes_image([node])
+        expected_result = [
+            TextNode("This is a ", TEXT_TYPE.TEXT),
+            TextNode("image one", TEXT_TYPE.IMAGE, "https://my-first-image.com"),
+            TextNode(" text with ", TEXT_TYPE.TEXT),
+            TextNode("image two", TEXT_TYPE.IMAGE, "https://my-second-image.com"),
+        ]
+        self.assertListEqual(result, expected_result)
+
+    def test_split_nodes_image_text_without_images(self):
+        node = TextNode("This text do not have any images", TEXT_TYPE.TEXT)
+        result = split_nodes_image([node])
+        expected_result = [
+            TextNode("This text do not have any images", TEXT_TYPE.TEXT)
+        ]
+        self.assertListEqual(result, expected_result)
+
+    def test_split_nodes_image_empty_node_list(self):
+        nodes = []
+        result = split_nodes_image(nodes)
+        expected_result = []
+        self.assertListEqual(result, expected_result)
 
 if __name__ == "__main__":
     unittest.main()
