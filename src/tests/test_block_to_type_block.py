@@ -2,7 +2,7 @@ import unittest
 
 from utils.block_to_block_type import BLOCK_TYPES, block_to_block_type
 
-class TestUtils(unittest.TestCase):
+class TestBlockToBlockType(unittest.TestCase):
     def test_heading_blocks(self):
 
         heading_blocks = [
