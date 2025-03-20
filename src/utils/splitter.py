@@ -5,7 +5,7 @@ from utils.extract_markdown_links import extract_markdown_links
 
 def markdown_to_blocks(md):
     splitted = md.split("\n\n")
-    whitespace_removed = map(lambda x: x.strip(), splitted)
+    whitespace_removed = list(map(lambda x: x.strip(), splitted))
     final = filter(lambda x: x, whitespace_removed)
 
     return list(final)
@@ -51,16 +51,12 @@ def split_text(text, delimiter, text_type):
     if is_md_malformed:
         raise ValueError(f"Markdown is malformed with text: {text} delimiter: {delimiter} text_type: {text_type}")
 
-    new_nodes = []
+    new_nodes: list[TextNode] = []
     for i, item in enumerate(splitted):
         is_text = i % 2 == 0
+        node_type = TEXT_TYPE.TEXT if is_text else text_type
 
-        new_node = None
-        if is_text:
-            new_node = TextNode(item, TEXT_TYPE.TEXT, None)
-        else:
-            new_node = TextNode(item, text_type, None)
-
+        new_node = TextNode(item, node_type, None)
         new_nodes.append(new_node)
     return new_nodes
 
