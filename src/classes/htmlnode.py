@@ -6,7 +6,12 @@ class HtmlNode():
         self.props = props
 
     def to_html(self):
-        raise NotImplementedError()
+        if self.value is None:
+            raise ValueError("All html nodes must have a value.")
+        if self.tag is None:
+            raise ValueError("All html nodes must have a tag.")
+        html = f"<{self.tag + self.props_to_html()}>{self.value}</{self.tag}>"
+        return html
 
     def props_to_html(self):
         if self.props is None:
