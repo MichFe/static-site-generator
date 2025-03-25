@@ -12,15 +12,16 @@ class BLOCK_TYPES(Enum):
 def block_to_block_type(block_md_text):
     type_patterns = {
         BLOCK_TYPES.HEADING: r"^#{1,6}",
-        BLOCK_TYPES.CODE: r"^```.*```$",
+        BLOCK_TYPES.CODE: r"^```[\s\S]*?```$",
         BLOCK_TYPES.QUOTE: r"^>",
         BLOCK_TYPES.UNORDERED_LIST: r"^- ",
         BLOCK_TYPES.ORDERED_LIST: r"^. ",
         BLOCK_TYPES.PARAGRAPH: r"",
     }
 
+    stripped_md = block_md_text.strip("\n")
     for type, pattern in type_patterns.items():
-        is_type = re.match(pattern, block_md_text) is not None
+        is_type = re.match(pattern, stripped_md) is not None
 
         if is_type:
             return type
