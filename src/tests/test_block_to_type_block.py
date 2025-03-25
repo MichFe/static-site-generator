@@ -28,7 +28,13 @@ class TestBlockToBlockType(unittest.TestCase):
             "```This is a code block```",
             "```This is not a code block",
             "``` This is another code block```",
-            "This is not a code block```"
+            "This is not a code block```",
+            """
+```
+This is text that _should_ remain
+the **same** even with inline stuff
+```
+"""
         ]
 
         block_types = list(map(block_to_block_type, code_blocks))
@@ -37,7 +43,8 @@ class TestBlockToBlockType(unittest.TestCase):
             BLOCK_TYPES.CODE,
             BLOCK_TYPES.PARAGRAPH,
             BLOCK_TYPES.CODE,
-            BLOCK_TYPES.PARAGRAPH
+            BLOCK_TYPES.PARAGRAPH,
+            BLOCK_TYPES.CODE
         ]
 
         self.assertListEqual(block_types, expected_result)
