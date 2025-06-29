@@ -13,7 +13,7 @@ class ParentNode(HtmlNode):
 
         children_html = ""
         for child in self.children:
-            children_html += child.to_html()
+            children_html += child.to_html() if hasattr(child, 'to_html') else child.text_node_to_html_node().to_html()
         return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"
 
     def __repr__(self):
