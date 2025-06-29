@@ -35,14 +35,14 @@ def create_html_node(markdown, type):
 def create_html_ordered_list(markdown):
     list_items = re.split(r"\d+\.\s", markdown)
     not_empty_list_items = [item.strip() for item in list_items if item.strip()]
-    li_items = list(map(lambda x: HtmlNode("li", x), not_empty_list_items))
+    li_items = list(map(lambda x: ParentNode("li", text_to_textnodes(x)), not_empty_list_items))
     ol_element = ParentNode("ol", li_items)
     return ol_element
 
 def create_html_unordered_list(markdown):
     list_items = markdown.split("- ")
-    not_empty_list_items = list(filter(lambda x: x.strip(), list_items))
-    li_items = list(map(lambda x: HtmlNode('li', x.strip()), not_empty_list_items))
+    not_empty_list_items = [item.strip() for item in list_items if item.strip()]
+    li_items = list(map(lambda x: ParentNode('li', text_to_textnodes(x)), not_empty_list_items))
     ul_element = ParentNode("ul",li_items)
     return ul_element
 
@@ -50,7 +50,7 @@ def create_html_header(markdown):
     heading_number = max(min(markdown.count('#'), 6), 1)
     tag = f"h{heading_number}"
     value = markdown[heading_number + 1:]
-    html_node = HtmlNode(tag, value)
+    html_node = ParentNode(tag, text_to_textnodes(value))
 
     return html_node
 
@@ -60,7 +60,7 @@ def create_html_paragraph(md):
     inner_html = ""
     for leaf_node in html_nodes:
         inner_html += leaf_node.to_html()
-    p_node = HtmlNode("p", inner_html)
+    p_node = ParentNode("p", text_to_textnodes(inner_html))
     return p_node
 
 def create_html_codeblock(md):
@@ -73,7 +73,7 @@ def create_html_codeblock(md):
 def create_html_quote(md):
     tag = "blockquote"
     value = md.replace("> ", "").strip()
-    html_node = HtmlNode(tag, value)
+    html_node = ParentNode(tag, text_to_textnodes(value))
 
     return html_node
 
