@@ -85,7 +85,7 @@ the **same** even with inline stuff
 
     def test_ordered_list_blocks(self):
         ordered_list_blocks = [
-            ". This is an ordered list",
+            "1. This is an ordered list",
             ".This is not",
             "This is a paragraph"
         ]
