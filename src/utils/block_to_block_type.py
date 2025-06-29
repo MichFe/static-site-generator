@@ -15,7 +15,7 @@ def block_to_block_type(block_md_text):
         BLOCK_TYPES.CODE: r"^```[\s\S]*?```$",
         BLOCK_TYPES.QUOTE: r"^>",
         BLOCK_TYPES.UNORDERED_LIST: r"^- ",
-        BLOCK_TYPES.ORDERED_LIST: r"^. ",
+        BLOCK_TYPES.ORDERED_LIST: r"^[1-9]\d*\. ",
         BLOCK_TYPES.PARAGRAPH: r"",
     }
 
