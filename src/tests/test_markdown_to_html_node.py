@@ -91,14 +91,14 @@ this is another line that is not a quote
 
     def test_multiline_unordered_list(self):
         md = """
-        - List item 1
-        - List item 2
+        - List item 1 `inner code block`
+        - List item 2 **inner bold**
         - List item 3
         """
         html = markdown_to_html_node(md).to_html()
         self.assertEqual(
             html,
-            "<div><ul><li>List item 1</li><li>List item 2</li><li>List item 3</li></ul></div>",
+            "<div><ul><li>List item 1 <code>inner code block</code></li><li>List item 2 <b>inner bold</b></li><li>List item 3</li></ul></div>",
         )
 
     def test_single_line_ordered_list(self):
