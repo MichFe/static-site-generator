@@ -28,6 +28,9 @@ def copy_static(origin, destination):
         os.mkdir(out_path)
         copy_static(src_path, out_path)
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    raise NotImplementedError('Generate page recursive is not implemented yet')
+
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     md_file = open(from_path, 'r', encoding='utf-8')
