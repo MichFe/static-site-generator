@@ -1,2 +1,3 @@
 # static-site-generator
-An educational site generator written in python
+
+An static site generator written in Python, this SSG converts Markdown files to HTML.
