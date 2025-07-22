@@ -13,7 +13,7 @@ def markdown_to_blocks(md):
 def text_to_textnodes(text):
     md_delimiters = {
         TEXT_TYPE.BOLD: "**",
-        TEXT_TYPE.ITALIC: "*",
+        TEXT_TYPE.ITALIC: "_",
         TEXT_TYPE.CODE: "`",
     }
 
